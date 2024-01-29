@@ -1,0 +1,67 @@
+version: '3.8'
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  app-data:
+  mysql-data:
+
+services:
+  web:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    container_name: web
+    depends_on:
+      - db
+    volumes:
+      - ./:/var/www
+      - ./docker/php/php.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      app-network:
+
+  webserver:
+    image: nginx:1.21.6-alpine
+    container_name: webserver
+    restart: unless-stopped
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./docker/nginx:/etc/nginx/conf.d
+      - ./:/var/www
+      - ./public:/var/www/public:ro
+      - ./storage/app:/var/www/storage/app:ro
+    depends_on:
+      - web
+    networks:
+      app-network:
+
+  db:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_DATABASE: laravel
+    ports:
+      - "3309:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      app-network:
+
+  node:
+    container_name: node
+    build:
+      context: ./docker/node
+      dockerfile: Dockerfile
+    working_dir: /var/www
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/var/www
+    networks:
+      app-network:

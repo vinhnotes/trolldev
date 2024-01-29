@@ -1,0 +1,5 @@
+#!/bin/sh
+
+cd `dirname $0`
+test -e ../tmp/pids/server.pid && rm ../tmp/pids/server.pid
+docker-compose down

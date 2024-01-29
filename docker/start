@@ -1,0 +1,13 @@
+#!/bin/sh
+
+cd `dirname $0`
+test -e ../tmp/pids/server.pid && rm ../tmp/pids/server.pid
+docker-compose up -d
+
+echo "Checking if web container started ..."
+until [ "`docker inspect -f {{.State.Running}} web`"=="true" ]; do
+    sleep 0.3;
+done;
+
+echo "Attaching web container ..."
+docker attach web
