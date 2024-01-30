@@ -1,9 +1,7 @@
 <?php
 
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
-
+use App\Http\Controllers\GitHubController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
@@ -59,3 +57,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::group(['middleware' => 'admin'], function () {
     });
 });
+
+Route::get('auth/github', [GitHubController::class, 'redirect'])->name('github.redirect');
+Route::get('auth/github/callback', [GitHubController::class, 'callback'])->name('github.callback');

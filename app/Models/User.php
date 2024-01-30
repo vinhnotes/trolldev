@@ -34,6 +34,8 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
+        'github_id',
+        'auth_type',
     ];
 
     /**
@@ -66,12 +68,12 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    public function posts() 
+    public function posts()
     {
         return $this->hasMany(Post::class);
     }
 
-    public function replies() 
+    public function replies()
     {
         return $this->hasMany(Reply::class);
     }

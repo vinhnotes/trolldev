@@ -7,6 +7,6 @@
 </template>
 <script setup>
 defineProps({
-  unreadNotificationsCount: Object
+  unreadNotificationsCount: Number
 })
 </script>
