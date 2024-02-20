@@ -95,6 +95,12 @@ const submit = () => {
           Log in
         </PrimaryButton>
       </div>
+      <div class="divider">OR</div>
+      <div class="flex items-center justify-center my-4">
+        <a class="btn btn-neutral" :href="route('github.redirect')">
+          <font-awesome-icon icon="fa-brands fa-github" class="h-6 w-6" /> Login with GitHub
+        </a>
+      </div>
     </form>
   </AuthenticationCard>
 </template>
